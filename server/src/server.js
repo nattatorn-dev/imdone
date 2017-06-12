@@ -15,7 +15,7 @@ require('dotenv').config();
 
 import mongoose from 'mongoose'
 // DB Setup
-const mongoUri = process.env.MONGODB_URL || "mongodb://localhost/postDB";
+const mongoUri = process.env.MONGODB_URL
 
 mongoose.Promise = require('bluebird');
 mongoose.connect(mongoUri, function(err) {
@@ -78,7 +78,7 @@ const tokenParser = () => {
       }else {
         req.user = user;
         return next();
-      } 
+      }
     });
 
   }
@@ -87,8 +87,8 @@ const tokenParser = () => {
 server.use(tokenParser());
 
 
-  server.use(graphqlPath, 
-    cors(), bodyParser.json(), 
+  server.use(graphqlPath,
+    cors(), bodyParser.json(),
     apolloUploadExpress({
       uploadDir: '/tmp/uploads'
     }),
@@ -134,4 +134,3 @@ server.get('/', function (req, res) {
     },
     {server: httpServer, path: subscriptionsPath}
   )
-
