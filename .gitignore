@@ -1,3 +1,16 @@
-**/node_modules
+# next config
 **/.next
+
+# Dependency directories
+**/node_modules
+
+# Logs
 **.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Build directory
+dist

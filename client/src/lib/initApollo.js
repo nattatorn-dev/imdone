@@ -1,6 +1,9 @@
 import { ApolloClient } from 'react-apollo'
-import {createNetworkInterface} from 'apollo-upload-client'
-import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws'
+import { createNetworkInterface } from 'apollo-upload-client'
+import {
+  SubscriptionClient,
+  addGraphQLSubscriptions,
+} from 'subscriptions-transport-ws'
 import fetch from 'isomorphic-fetch'
 
 const GRAPHQL_URL = 'http://localhost:4000/graphql'
@@ -13,25 +16,22 @@ if (!process.browser) {
   global.fetch = fetch
 }
 
-function create () {
+function create() {
   const ssrMode = !process.browser
 
   let networkInterface = createNetworkInterface({
     uri: GRAPHQL_URL,
     opts: {
-      credentials: 'same-origin'
-    }
+      credentials: 'same-origin',
+    },
   })
 
   if (!ssrMode) {
     const wsClient = new SubscriptionClient(WS_URL, {
-      reconnect: true
+      reconnect: true,
     })
 
-    networkInterface = addGraphQLSubscriptions(
-      networkInterface,
-      wsClient
-    )
+    networkInterface = addGraphQLSubscriptions(networkInterface, wsClient)
   }
 
   return new ApolloClient({
@@ -41,7 +41,7 @@ function create () {
   })
 }
 
-export default function initApollo () {
+export default function initApollo() {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (!process.browser) {

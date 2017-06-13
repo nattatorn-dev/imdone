@@ -1,8 +1,8 @@
 import { gql, graphql } from 'react-apollo'
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import Button from 'react-bootstrap/lib/Button';
-import { reduxForm, Field, SubmissionError } from 'redux-form';
+import FormGroup from 'react-bootstrap/lib/FormGroup'
+import FormControl from 'react-bootstrap/lib/FormControl'
+import Button from 'react-bootstrap/lib/Button'
+import { reduxForm, Field, SubmissionError } from 'redux-form'
 
 const validate = values => {
   const errors = {}
@@ -17,33 +17,42 @@ const validate = values => {
 
 const submit = async (values, dispatch, props) => {
   try {
-    let url = values.url;
+    let url = values.url
     // prepend http if missing from url
     if (!url.match(/^[a-zA-Z]+:\/\//)) {
       url = `http://${url}`
     }
     props.createPost(values.title, url)
-  } catch(e) {
-    return Promise.reject(new SubmissionError({_error: e.toString()}));
+  } catch (e) {
+    return Promise.reject(new SubmissionError({ _error: e.toString() }))
   }
 }
 
-const renderField = ({ input, label, type, placeholder, meta: { touched, error, warning } }) => (
-    <FormGroup validationState={(touched && error)?"error" : null}>
-        <FormControl placeholder={placeholder} type={type} {...input}/>
-        {touched && error && <span className="help-block">{error}</span>}
-    </FormGroup>
-)
+const renderField = ({
+  input,
+  label,
+  type,
+  placeholder,
+  meta: { touched, error, warning },
+}) =>
+  <FormGroup validationState={touched && error ? 'error' : null}>
+    <FormControl placeholder={placeholder} type={type} {...input} />
+    {touched && error && <span className="help-block">{error}</span>}
+  </FormGroup>
 
-function Submit ({ handleSubmit, resetForm, submitting, error }) {
-
+function Submit({ handleSubmit, resetForm, submitting, error }) {
   return (
     <form onSubmit={handleSubmit(submit)}>
       <h1>Create Post</h1>
       {error && <div className="alert alert-danger">{error}</div>}
-      <Field name="title" type="text" component={renderField} placeholder="title"/>
-      <Field name="url" type="text" component={renderField} placeholder="url"/>
-      <Button type='submit'>Submit</Button>
+      <Field
+        name="title"
+        type="text"
+        component={renderField}
+        placeholder="title"
+      />
+      <Field name="url" type="text" component={renderField} placeholder="url" />
+      <Button type="submit">Submit</Button>
     </form>
   )
 }
@@ -62,23 +71,32 @@ const createPost = gql`
 
 export default graphql(createPost, {
   props: ({ mutate }) => ({
-    createPost: (title, url) => mutate({
-      variables: { title, url },
-      optimisticResponse: {
-        createPost: {id: (new Date()).getTime(), title, url, votes: 0, createdAt: new Date()}
-      },
-      updateQueries: {
-        allPosts: (previousResult, { mutationResult }) => {
-          const newPost = mutationResult.data.createPost
-          return Object.assign({}, previousResult, {
-            // Append the new post
-            allPosts: [newPost, ...previousResult.allPosts]
-          })
-        }
-      }
-    })
-  })
-})(reduxForm({
+    createPost: (title, url) =>
+      mutate({
+        variables: { title, url },
+        optimisticResponse: {
+          createPost: {
+            id: new Date().getTime(),
+            title,
+            url,
+            votes: 0,
+            createdAt: new Date(),
+          },
+        },
+        updateQueries: {
+          allPosts: (previousResult, { mutationResult }) => {
+            const newPost = mutationResult.data.createPost
+            return Object.assign({}, previousResult, {
+              // Append the new post
+              allPosts: [newPost, ...previousResult.allPosts],
+            })
+          },
+        },
+      }),
+  }),
+})(
+  reduxForm({
     form: 'postForm',
-    validate
-})(Submit))
+    validate,
+  })(Submit),
+)

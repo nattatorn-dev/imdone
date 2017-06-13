@@ -1,15 +1,15 @@
 import { makeExecutableSchema } from 'graphql-tools'
 import { withFilter, PubSub } from 'graphql-subscriptions'
-import jwt from 'jwt-simple';
+import jwt from 'jwt-simple'
 import PostModel from './Post'
 import UserModel from './User'
 import logger from './logger'
 
-const fs = require('fs');
+const fs = require('fs')
 
 const pubsub = new PubSub()
-const typeDefs = [`
-
+const typeDefs = [
+  `
   type User {
     id: String!
     username: String!
@@ -76,78 +76,90 @@ const typeDefs = [`
     mutation: Mutation
     subscription: Subscription
   }
-`]
+`,
+]
 let nextMessage = 4
 
 const resolvers = {
   Query: {
     me: (root, args) => {
-        return root.user;
+      return root.user
     },
-    allPosts: (root, {orderBy, skip, first}, context) => {
-      return PostModel.find({}, null, {skip, limit: first});
+    allPosts: (root, { orderBy, skip, first }, context) => {
+      return PostModel.find({}, null, { skip, limit: first })
     },
     _allPostsMeta: () => {
       return new Promise((resolve, reject) => {
         PostModel.find().count((err, count) => {
-          resolve({count})
-        });
-      });
-
-      
-    }
+          resolve({ count })
+        })
+      })
+    },
   },
   Mutation: {
     login: (root, args) => {
-        return UserModel.findOne({username: args.username})
-        .then((user) => {
-            if (!user || !user.validPassword(args.password)) {
-                throw new Error("Username or password not match");
-            }
+      return UserModel.findOne({ username: args.username }).then(user => {
+        if (!user || !user.validPassword(args.password)) {
+          throw new Error('Username or password not match')
+        }
 
-            return Promise.resolve({
-                userId: user._id,
-                token: jwt.encode({ sub: user._id, iat: new Date().getTime(), login: user.username, }, process.env.SECRET)
-            });
-        });
+        return Promise.resolve({
+          userId: user._id,
+          token: jwt.encode(
+            { sub: user._id, iat: new Date().getTime(), login: user.username },
+            process.env.SECRET,
+          ),
+        })
+      })
     },
     register: (root, args) => {
-        return UserModel.findOne({username: args.username})
-        .then((user) => {
-            if (user) {
-                throw new Error("Username already exist");
-            }
+      return UserModel.findOne({ username: args.username }).then(user => {
+        if (user) {
+          throw new Error('Username already exist')
+        }
 
-            return (new UserModel(args)).save();
-        });            
-    },
-    createPost (root, {title, url}) {
-      return new Promise((resolve, reject) => {
-        let newPost = new PostModel({title, url, createdAt: new Date(), votes: 0});
-        newPost.save().then((post) => {
-          pubsub.publish('postAdded', {postAdded: post})
-          resolve(post);
-        }).error((err) => {
-          reject("failed to create post")
-        });
-      });
-    },
-    updatePost (root, {id, votes}) {
-      return PostModel.findOneAndUpdate({_id: id}, {$set: {votes}}, {new: true});
-    },
-    singleUpload (_, {file}) {
-      fs.rename(file.path, '/your/upload/' + file.name, function (err) {
-          console.log('uploaded: ' + file.name);
-          if (err) {
-            console.log(err)
-          }
+        return new UserModel(args).save()
       })
-      return {...file};
     },
-    multipleUpload (_, {files}) {
+    createPost(root, { title, url }) {
+      return new Promise((resolve, reject) => {
+        let newPost = new PostModel({
+          title,
+          url,
+          createdAt: new Date(),
+          votes: 0,
+        })
+        newPost
+          .save()
+          .then(post => {
+            pubsub.publish('postAdded', { postAdded: post })
+            resolve(post)
+          })
+          .error(err => {
+            reject('failed to create post')
+          })
+      })
+    },
+    updatePost(root, { id, votes }) {
+      return PostModel.findOneAndUpdate(
+        { _id: id },
+        { $set: { votes } },
+        { new: true },
+      )
+    },
+    singleUpload(_, { file }) {
+      fs.rename(file.path, '/your/upload/' + file.name, function(err) {
+        console.log('uploaded: ' + file.name)
+        if (err) {
+          console.log(err)
+        }
+      })
+      return { ...file }
+    },
+    multipleUpload(_, { files }) {
       files.map(file => console.log(`uploaded size is ${file.size}`))
-      return [...files];
-    }
+      return [...files]
+    },
   },
   Subscription: {
     postAdded: {
@@ -156,21 +168,21 @@ const resolvers = {
           logger.info('post subscribed!')
           return pubsub.asyncIterator('postAdded')
         },
-        (payload) => {
+        payload => {
           logger.debug('new post', payload)
           return true
-        }
-      )
-    }    
+        },
+      ),
+    },
   },
   UserToken: {
-      user(userToken) {
-          return UserModel.findById(userToken.userId);
-      }
-  }
-
+    user(userToken) {
+      return UserModel.findById(userToken.userId)
+    },
+  },
 }
 
 export const schema = makeExecutableSchema({
-  typeDefs, resolvers
+  typeDefs,
+  resolvers,
 })

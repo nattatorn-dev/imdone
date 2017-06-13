@@ -1,18 +1,21 @@
 import React from 'react'
 import { gql, graphql } from 'react-apollo'
 import PostUpvoter from './PostUpvoter'
-import ListGroup from 'react-bootstrap/lib/ListGroup';
-import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
+import ListGroup from 'react-bootstrap/lib/ListGroup'
+import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
 
 const POSTS_PER_PAGE = 10
 
 class PostList extends React.Component {
-  componentDidMount () {
+  componentDidMount() {
     this.props.subscribe()
   }
 
   render() {
-    const { data: { allPosts, loading, _allPostsMeta }, loadMorePosts } = this.props;
+    const {
+      data: { allPosts, loading, _allPostsMeta },
+      loadMorePosts,
+    } = this.props
     if (allPosts && allPosts.length) {
       const areMorePosts = allPosts.length < _allPostsMeta.count
       return (
@@ -25,10 +28,14 @@ class PostList extends React.Component {
                   <a href={post.url}>{post.title}</a>{'  '}
                   <PostUpvoter id={post.id} votes={post.votes} />
                 </div>
-              </ListGroupItem>
+              </ListGroupItem>,
             )}
           </ListGroup>
-          {areMorePosts ? <button onClick={() => loadMorePosts()}> {loading ? 'Loading...' : 'Show More'} </button> : ''}
+          {areMorePosts
+            ? <button onClick={() => loadMorePosts()}>
+                {' '}{loading ? 'Loading...' : 'Show More'}{' '}
+              </button>
+            : ''}
         </section>
       )
     }
@@ -51,7 +58,7 @@ const allPosts = gql`
   }
 `
 
-const postSubscription =  gql`
+const postSubscription = gql`
   subscription postAdded {
     postAdded {
       id
@@ -69,15 +76,15 @@ export default graphql(allPosts, {
   options: {
     variables: {
       skip: 0,
-      first: POSTS_PER_PAGE
-    }
+      first: POSTS_PER_PAGE,
+    },
   },
   props: ({ data }) => ({
     data,
     loadMorePosts: () => {
       return data.fetchMore({
         variables: {
-          skip: data.allPosts.length
+          skip: data.allPosts.length,
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult) {
@@ -85,22 +92,21 @@ export default graphql(allPosts, {
           }
           return Object.assign({}, previousResult, {
             // Append the new posts results to the old one
-            allPosts: [...previousResult.allPosts, ...fetchMoreResult.allPosts]
+            allPosts: [...previousResult.allPosts, ...fetchMoreResult.allPosts],
           })
-        }
+        },
       })
     },
-    subscribe: () => (
+    subscribe: () =>
       data.subscribeToMore({
         document: postSubscription,
-        updateQuery: (prev, {subscriptionData: {data}}) => ({
+        updateQuery: (prev, { subscriptionData: { data } }) => ({
           ...prev,
-          allPosts: [...prev.allPosts, data.postAdded]
+          allPosts: [...prev.allPosts, data.postAdded],
         }),
-        onError (error) {
+        onError(error) {
           console.log(error)
-        }
-      })
-    )    
-  })
+        },
+      }),
+  }),
 })(PostList)

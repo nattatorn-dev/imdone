@@ -6,22 +6,21 @@ import withData from '../lib/withData'
 import { authenticate } from '../utils/AuthService'
 
 class PostPage extends React.Component {
-
   static async getInitialProps({ req, res }) {
-    const user = await authenticate(req, res);
-    return { user };
+    const user = await authenticate(req, res)
+    return { user }
   }
 
   render() {
-	return (
-	  <Layout user={this.props.user} title='Post List'>
-	    <div className="container">
-	    <Submit />
-	    <hr/>
-	    <PostList />
-	    </div>
-	  </Layout>
-	)
+    return (
+      <Layout user={this.props.user} title="Post List">
+        <div className="container">
+          <Submit />
+          <hr />
+          <PostList />
+        </div>
+      </Layout>
+    )
   }
 }
 

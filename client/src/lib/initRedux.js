@@ -10,22 +10,23 @@ if (process.browser && window.__REDUX_DEVTOOLS_EXTENSION__) {
   devtools = window.__REDUX_DEVTOOLS_EXTENSION__()
 }
 
-function create (apollo, initialState = {}) {
+function create(apollo, initialState = {}) {
   return createStore(
-    combineReducers({ // Setup reducers
+    combineReducers({
+      // Setup reducers
       ...reducers,
       apollo: apollo.reducer(),
-      form: formReducer
+      form: formReducer,
     }),
     initialState, // Hydrate the store with server-side data
     compose(
       applyMiddleware(apollo.middleware()), // Add additional middleware here
-      devtools
-    )
+      devtools,
+    ),
   )
 }
 
-export default function initRedux (apollo, initialState) {
+export default function initRedux(apollo, initialState) {
   // Make sure to create a new store for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (!process.browser) {
