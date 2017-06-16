@@ -4,10 +4,8 @@ import Layout from '../components/Layout'
 
 export default withData(props =>
   <Layout title="Upload demo">
-    <div className="container">
-      <h1>Apollo upload examples</h1>
-      <p>Select an file to upload and view the response in the console.</p>
-      <Upload />
-    </div>
+    <h1>Apollo upload examples</h1>
+    <p>Select an file to upload and view the response in the console.</p>
+    <Upload />
   </Layout>,
 )

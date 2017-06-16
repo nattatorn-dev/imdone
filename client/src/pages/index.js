@@ -6,16 +6,14 @@ import { authenticate } from '../utils/AuthService'
 
 const Page = props =>
   <Layout user={props.user} title="Home">
-    <div className="container">
-      <Jumbotron>
-        <h1>Hello, world!</h1>
-        <p>
-          This is a simple demo of using next.js with apollo/subscription and
-          redux.
-        </p>
-        <p><Button bsStyle="primary">Learn more</Button></p>
-      </Jumbotron>
-    </div>
+    <Jumbotron>
+      <h1>Hello, world!</h1>
+      <p>
+        This is a simple demo of using next.js with apollo/subscription and
+        redux.
+      </p>
+      <p><Button bsStyle="primary">Learn more</Button></p>
+    </Jumbotron>
   </Layout>
 
 Page.getInitialProps = async ({ req, res }) => {

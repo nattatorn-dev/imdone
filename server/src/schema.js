@@ -4,6 +4,7 @@ import jwt from 'jwt-simple'
 import PostModel from './Post'
 import UserModel from './User'
 import logger from './logger'
+import { fetchOpenGraphByUrl } from '../services/api'
 
 const fs = require('fs')
 
@@ -25,9 +26,13 @@ const typeDefs = [
   type Post {
     id: String
     title: String
-    votes: Int
+    description: String
     url: String
+    votes: Int
+    openGraph: String
     createdAt: String
+    updateAt: String
+    isDeleted: Boolean
   }
 
   type Count {
@@ -52,6 +57,23 @@ const typeDefs = [
     path: String!
   }
 
+  type ImageOpenGraph {
+    url: String
+    width: String
+    height: String
+    type: String
+  }
+
+  type OpenGraph {
+    ogSiteName: String
+    ogLocale: String
+    ogUrl: String
+    ogType: String
+    ogTitle: String
+    ogDescription: String
+    ogImage: ImageOpenGraph
+  }
+
   type Query {
     me: User
     allPosts(orderBy: OrderPost, skip: Int, first: Int): [Post]
@@ -65,6 +87,7 @@ const typeDefs = [
     updatePost(id: String, votes: Int): Post
     singleUpload (file: Upload!): File!
     multipleUpload (files: [Upload!]!): [File!]!
+    openGraph(url: String): OpenGraph
   }
 
   type Subscription {
@@ -88,6 +111,14 @@ const resolvers = {
     allPosts: (root, { orderBy, skip, first }, context) => {
       return PostModel.find({}, null, { skip, limit: first })
     },
+    // openGraph: (root, { url }) => {
+    //   return fetchOpenGraphByUrl(url)
+    //     .then(data => {
+    //       const { data: { ...obj } } = data
+    //       return obj
+    //     })
+    //     .catch(err => console.log(err))
+    // },
     _allPostsMeta: () => {
       return new Promise((resolve, reject) => {
         PostModel.find().count((err, count) => {
@@ -159,6 +190,14 @@ const resolvers = {
     multipleUpload(_, { files }) {
       files.map(file => console.log(`uploaded size is ${file.size}`))
       return [...files]
+    },
+    openGraph: (root, { url }) => {
+      return fetchOpenGraphByUrl(url)
+        .then(data => {
+          const { data: { ...obj } } = data
+          return obj
+        })
+        .catch(err => console.log(err))
     },
   },
   Subscription: {

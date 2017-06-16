@@ -4,8 +4,6 @@ import withData from '../lib/withData'
 
 export default withData(props =>
   <Layout title="Register">
-    <div className="container">
-      <Register />
-    </div>
+    <Register />
   </Layout>,
 )
