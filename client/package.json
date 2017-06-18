@@ -2,13 +2,13 @@
   "name": "with-apollo-and-redux",
   "version": "2.0.0",
   "scripts": {
+    "flow": "flow",
     "dev": "node ./src/server.js",
     "start": "NODE_ENV=production babel-node server.js",
     "build": "NODE_ENV=production next build"
   },
   "dependencies": {
     "apollo-upload-client": "^4.0.3",
-    "babel-plugin-inline-react-svg": "^0.4.0",
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.3",
@@ -19,14 +19,22 @@
     "re-bulma": "^0.4.4",
     "react": "^15.5.4",
     "react-apollo": "^1.4.2",
-    "react-bootstrap": "^0.31.0",
     "react-cookie": "^1.0.5",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.5",
+    "recompose": "^0.23.5",
     "redux": "^3.6.0",
     "redux-form": "^6.7.0",
+    "styled-components": "^2.1.0",
     "subscriptions-transport-ws": "^0.7.1",
     "wreck": "^12.2.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-inline-react-svg": "^0.4.0",
+    "babel-plugin-root-import": "^5.1.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "flow-bin": "^0.48.0"
   },
   "author": "",
   "license": "ISC"
