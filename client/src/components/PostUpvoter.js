@@ -1,11 +1,15 @@
 import React from 'react'
 import { gql, graphql } from 'react-apollo'
-import Button from 'react-bootstrap/lib/Button'
+import { Button } from 're-bulma'
 
 function PostUpvoter({ upvote, votes, id }) {
   return (
-    <Button onClick={() => upvote(id, votes + 1)}>
-      {votes}
+    <Button
+      buttonStyle="isOutlined"
+      color="isInfo"
+      onClick={() => upvote(id, votes + 1)}
+    >
+      {votes.toString()}
     </Button>
   )
 }

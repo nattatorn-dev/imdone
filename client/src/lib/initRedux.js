@@ -21,8 +21,8 @@ function create(apollo, initialState = {}) {
     initialState, // Hydrate the store with server-side data
     compose(
       applyMiddleware(apollo.middleware()), // Add additional middleware here
-      devtools,
-    ),
+      devtools
+    )
   )
 }
 

@@ -1,8 +1,7 @@
 import React from 'react'
 import { gql, graphql } from 'react-apollo'
 import PostUpvoter from './PostUpvoter'
-import ListGroup from 'react-bootstrap/lib/ListGroup'
-import ListGroupItem from 'react-bootstrap/lib/ListGroupItem'
+import { Panel, PanelBlock, Button } from 're-bulma'
 
 const POSTS_PER_PAGE = 10
 
@@ -19,24 +18,30 @@ class PostList extends React.Component {
     if (allPosts && allPosts.length) {
       const areMorePosts = allPosts.length < _allPostsMeta.count
       return (
-        <section>
-          <ListGroup>
+        <div>
+          <Panel>
             {allPosts.map((post, index) =>
-              <ListGroupItem key={post.id}>
+              <PanelBlock key={post.id}>
                 <div>
                   <span>{index + 1}. </span>
                   <a href={post.url}>{post.title}</a>{'  '}
                   <PostUpvoter id={post.id} votes={post.votes} />
                 </div>
-              </ListGroupItem>,
+              </PanelBlock>
             )}
-          </ListGroup>
+          </Panel>
           {areMorePosts
-            ? <button onClick={() => loadMorePosts()}>
-                {' '}{loading ? 'Loading...' : 'Show More'}{' '}
-              </button>
+            ? loading
+              ? <Button state="isLoading" color="isPrimary">Loading</Button>
+              : <Button
+                  buttonStyle="isOutlined"
+                  color="isPrimary"
+                  onClick={() => loadMorePosts()}
+                >
+                  Show More
+                </Button>
             : ''}
-        </section>
+        </div>
       )
     }
     return <div>Loading</div>

@@ -1,9 +1,8 @@
 import { gql, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 
-import FormGroup from 'react-bootstrap/lib/FormGroup'
-import FormControl from 'react-bootstrap/lib/FormControl'
-import Button from 'react-bootstrap/lib/Button'
+import { Button, Input } from 're-bulma'
+
 import {
   reduxForm,
   Field,
@@ -42,15 +41,34 @@ const renderOpenGraph = () => {
 
 const renderField = ({
   input,
+  input: { name },
   label,
   type,
   placeholder,
   meta: { touched, error, warning },
-}) =>
-  <FormGroup validationState={touched && error ? 'error' : null}>
-    <FormControl placeholder={placeholder} type={type} {...input} />
-    {touched && error && <span className="help-block">{error}</span>}
-  </FormGroup>
+}) => {
+  const config = touched && error
+    ? {
+        color: 'isDanger',
+        text: `This ${name} is invalid`,
+        image: 'fa fa-warning',
+      }
+    : {
+        image: 'fa fa-check',
+      }
+
+  return (
+    <Input
+      color={config.color}
+      type={type}
+      placeholder={placeholder}
+      icon={config.image}
+      hasIconRight
+      help={{ color: config.color, text: config.text }}
+      {...input}
+    />
+  )
+}
 
 function Submit({ data, handleSubmit, resetForm, submitting, error, hasUrl }) {
   return (
@@ -65,7 +83,9 @@ function Submit({ data, handleSubmit, resetForm, submitting, error, hasUrl }) {
       />
       <Field name="url" type="text" component={renderField} placeholder="url" />
       {hasUrl && <OpenGraph url={hasUrl} />}
-      <Button type="submit">Submit</Button>
+      <Button buttonStyle="isOutlined" color="isPrimary" type="submit">
+        Submit
+      </Button>
     </form>
   )
 }

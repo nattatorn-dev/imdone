@@ -8,13 +8,6 @@ import {
   Columns,
   Column,
   Box,
-  Footer,
-  Nav,
-  NavContainer,
-  NavGroup,
-  NavItem,
-  NavToggle,
-  Navbar,
   Content,
   Button,
   Icon,
@@ -39,9 +32,66 @@ import NotebookIcon from '../../assets/images/notebook.svg'
 import NotebooksIcon from '../../assets/images/notebooks.svg'
 import TagIcon from '../../assets/images/tag.svg'
 
+import { Nav, Footer, ColBody, ColNoteBooks } from './layouts'
+import NoteBooksMediaLists from './NoteBooksMediaLists'
+import FolderLibraryList from './FolderLibraryList'
+import faker from 'faker'
+
+const generateNoteBooks = (limit = 10) => {
+  let notebooks = []
+
+  for (let i = 0; i < limit; ++i) {
+    notebooks.push({
+      _id: `${i + 1}`,
+      title: faker.lorem.sentence(),
+      excerpt: faker.lorem.lines(),
+      description: faker.lorem.paragraphs(),
+      url: faker.internet.url(),
+      image: {
+        url: i % 2 === 0 ? faker.image.avatar() : null,
+      },
+      tags: [
+        {
+          name: faker.lorem.slug(),
+        },
+        {
+          name: faker.lorem.slug(),
+        },
+        {
+          name: faker.lorem.slug(),
+        },
+        {
+          name: faker.lorem.slug(),
+        },
+      ],
+      isFavorite: true,
+      createdAt: faker.date.past(),
+      updatedAt: faker.date.past(),
+    })
+  }
+
+  return notebooks
+}
+
+const library = [
+  { count: 3, fileName: 'inbox', display: 'Inbox' },
+  { count: 15, fileName: 'favorite', display: 'favorites' },
+  { count: 18, fileName: 'recent', display: 'Recents' },
+  { count: 5, fileName: 'trash', display: 'Trash' },
+  { count: 102, fileName: 'notebooks', display: 'All Notes' },
+]
+
+const notebooks = [
+  { count: 68, fileName: 'notebook', display: 'React' },
+  { count: 30, fileName: 'notebook', display: 'Angular' },
+  { count: 22, fileName: 'notebook', display: 'Vue' },
+  { count: 10, fileName: 'notebook', display: 'Devops' },
+]
+
 class Layout extends React.Component {
   state = {
     toggleNav: false,
+    notebooks: [],
   }
 
   handleToggleNav = () => {
@@ -50,132 +100,26 @@ class Layout extends React.Component {
     })
   }
 
-  renderMedia = () => {
-    return (
-      <div>
-        <Media>
-          <MediaContent>
-            <Content>
-              <p>
-                <strong style={{ fontWeight: 'bold' }}>John Smith</strong>{' '}
-                <strong>@johnsmith</strong>{' '}
-                <strong>31m</strong>
-                <br />
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              </p>
-            </Content>
-          </MediaContent>
-        </Media>
-        <Content>
-          <p style={{ fontSize: '12px' }}>
-            <small>May 22, 2017</small>{' '}
-            <TagIcon style={{ height: '16px', width: '16px' }} />
-            <small>
-              es6, javascript
-            </small>
-          </p>
-        </Content>
-      </div>
-    )
-  }
-
-  renderMediaWithImage = () => {
-    return (
-      <div>
-        <Media>
-          <MediaLeft>
-            <Image
-              src="https://cdn.zeit.co/zeit/twitter-card.png"
-              size="is64X64"
-              ratio="isSquare"
-            />
-          </MediaLeft>
-          <MediaContent>
-            <Content>
-              <p>
-                <strong style={{ fontWeight: 'bold' }}>John Smith</strong>{' '}
-                <strong>@johnsmith</strong>{' '}
-                <strong>31m</strong>
-                <br />
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              </p>
-            </Content>
-          </MediaContent>
-        </Media>
-        <Content>
-          <p style={{ fontSize: '12px' }}>
-            <small>May 22, 2017</small>{' '}
-          </p>
-        </Content>
-      </div>
-    )
+  componentDidMount() {
+    console.log('componentDidMount')
+    this.setState({ notebooks: generateNoteBooks(8) })
   }
 
   render() {
     const { user, title } = this.props
+    const { toggleNav } = this.state
     const style = { padding: '0px' }
-    const stlyeLi = {
-      borderBottom: '1px solid rgba(211,214,219,.5)',
-    }
     return (
       <div className="app">
         <Head>
           <title>{title}</title>
         </Head>
-        <Nav hasShadow>
-          <NavContainer isActive isTab>
-            <NavGroup align="left">
-              <NavItem>
-                <img
-                  style={{ paddingRight: '2px' }}
-                  src="/static/logo.png"
-                  alt="Logo"
-                />
-                <strong>{'pollo'}</strong>
-              </NavItem>
-            </NavGroup>
-            <NavGroup align="center">
-              <NavItem>
-                Note
-              </NavItem>
-              <NavItem>
-                Folder
-              </NavItem>
-            </NavGroup>
-            <NavToggle
-              isActive={this.state.toggleNav}
-              onClick={this.handleToggleNav}
-            />
-            <NavGroup align="right" isMenu>
-              <Link prefetch href="/posts">
-                <NavItem>Posts</NavItem>
-              </Link>
-              <Link prefetch href="/about">
-                <NavItem>About</NavItem>
-              </Link>
-              {!user &&
-                <NavItem>
-                  <Link href="/login">
-                    <Button buttonStyle="isOutlined">Log in</Button>
-                  </Link>
-                </NavItem>}
-              {!user &&
-                <NavItem>
-                  <Link href="/register">
-                    <Button state="isActive" color="isInfo">Sign up</Button>
-                  </Link>
-                </NavItem>}
-              {user &&
-                <NavItem>
-                  Hi <strong>{user.dispName}</strong>
-                </NavItem>}
-              {user &&
-                <NavItem onClick={() => logout()}>
-                  <Button state="isActive" color="isInfo">Log out</Button>
-                </NavItem>}
-            </NavGroup>
-          </NavContainer>
-        </Nav>
+        <Nav
+          user={user}
+          title={title}
+          handleToggleNav={this.handleToggleNav}
+          toggleNav={toggleNav}
+        />
         <Section>
           <Columns size="is2">
             <Column style={style}>
@@ -184,121 +128,28 @@ class Layout extends React.Component {
               <Button>Categories</Button>
 
               <Menu style={{ paddingTop: '30px' }}>
-                <MenuLabel>
-                  LIBRARY
-                </MenuLabel>
-                <MenuList>
-                  <li>
-                    <MenuLink href="#">
-                      <InboxIcon style={{ height: '16px', width: '16px' }} />{' '}
-                      Inbox
-                    </MenuLink>
-                  </li>
-                  <li>
-                    <MenuLink href="#">
-                      <FavoriteIcon
-                        style={{ height: '16px', width: '16px' }}
-                      />{' '}
-                      Favorites
-                    </MenuLink>
-                  </li>
-                  <li>
-                    <MenuLink href="#">
-                      <RecentIcon style={{ height: '16px', width: '16px' }} />{' '}
-                      Recents
-                    </MenuLink>
-                  </li>
-                  <li>
-                    <MenuLink href="#">
-                      <TrashIcon style={{ height: '16px', width: '16px' }} />{' '}
-                      Trash
-                    </MenuLink>
-                  </li>
-                  <li>
-                    <MenuLink href="#">
-                      <NotebooksIcon
-                        style={{ height: '16px', width: '16px' }}
-                      />{' '}
-                      All Notes
-                    </MenuLink>
-                  </li>
-                </MenuList>
-                <MenuLabel>
-                  NOTEBOOKS
-                </MenuLabel>
-                <MenuList>
-                  <li>
-                    <MenuLink href="#">
-                      <NotebookIcon
-                        style={{ height: '16px', width: '16px' }}
-                      />{' '}React
-                    </MenuLink>
-                  </li>
-                  <li>
-                    <MenuLink isActive href="#">
-                      <NotebookIcon
-                        style={{ height: '16px', width: '16px' }}
-                      />{' '}Angular
-                    </MenuLink>
-                  </li>
-                  <li>
-                    <MenuLink href="#">
-                      <NotebookIcon
-                        style={{ height: '16px', width: '16px' }}
-                      />{' '}Vue
-                    </MenuLink>
-                  </li>
-                  <li>
-                    <MenuLink href="#">
-                      <NotebookIcon
-                        style={{ height: '16px', width: '16px' }}
-                      />{' '}Devops
-                    </MenuLink>
-                  </li>
-                </MenuList>
-
+                <FolderLibraryList lable={'LIBRARY'} library={library} />
+                <FolderLibraryList lable={'NOTEBOOKS'} library={notebooks} />
+                <div>
+                  <MenuLabel>
+                    CONNECTS
+                  </MenuLabel>
+                </div>
               </Menu>
             </Column>
-            <Column size="is3" style={style}>
+            <ColNoteBooks>
               <Menu>
                 <MenuList>
-                  <li style={stlyeLi}>
-                    <MenuLink href="#">{this.renderMedia()}</MenuLink>
-                  </li>
-                  <li style={stlyeLi}>
-                    <MenuLink href="#">{this.renderMediaWithImage()}</MenuLink>
-                  </li>
-                  <li style={stlyeLi}>
-                    <MenuLink href="#">{this.renderMedia()}</MenuLink>
-                  </li>
-
+                  <NoteBooksMediaLists notebooks={this.state.notebooks} />
                 </MenuList>
               </Menu>
-            </Column>
-            <Column size="is7" style={style}>
-              <Box>{this.props.children}</Box>
-            </Column>
+            </ColNoteBooks>
+            <ColBody>
+              {this.props.children}
+            </ColBody>
           </Columns>
         </Section>
-        <Footer>
-          <Container>
-            <Content>
-              <p style={{ textAlign: 'center' }}>
-                <strong>reBulma</strong> by{' '}
-                <a href="https://github.com/bokuweb">bokuweb</a>. The source
-                code is licensed
-                <a href="http://opensource.org/licenses/mit-license.php">
-                  MIT
-                </a>.
-              </p>
-              <p style={{ textAlign: 'center' }}>
-                <a className="icon" href="https://github.com/bokuweb/re-bulma">
-                  <i className="fa fa-github" />
-                </a>
-              </p>
-            </Content>
-          </Container>
-        </Footer>
+        <Footer />
         <style jsx>{`
           .app .brand {
             text-decoration: none;

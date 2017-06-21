@@ -3,5 +3,8 @@
     "env",
     "next/babel"
   ],
-  "plugins": [ "inline-react-svg" ]
+  "plugins": [
+    "inline-react-svg",
+    "transform-flow-strip-types"
+  ]
 }

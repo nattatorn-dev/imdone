@@ -1,19 +1,16 @@
+import { Title, Subtitle } from 're-bulma'
 import Layout from '../components/Layout'
+
 import withData from '../lib/withData'
-import Jumbotron from 'react-bootstrap/lib/Jumbotron'
-import Button from 'react-bootstrap/lib/Button'
 import { authenticate } from '../utils/AuthService'
 
 const Page = props =>
   <Layout user={props.user} title="Home">
-    <Jumbotron>
-      <h1>Hello, world!</h1>
-      <p>
-        This is a simple demo of using next.js with apollo/subscription and
-        redux.
-      </p>
-      <p><Button bsStyle="primary">Learn more</Button></p>
-    </Jumbotron>
+    <Title>Section</Title>
+    <Subtitle>
+      A simple container to divide your page into <strong>sections</strong>,
+      like the one you're currently reading
+    </Subtitle>
   </Layout>
 
 Page.getInitialProps = async ({ req, res }) => {

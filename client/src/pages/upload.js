@@ -7,5 +7,5 @@ export default withData(props =>
     <h1>Apollo upload examples</h1>
     <p>Select an file to upload and view the response in the console.</p>
     <Upload />
-  </Layout>,
+  </Layout>
 )

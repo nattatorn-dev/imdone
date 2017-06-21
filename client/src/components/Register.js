@@ -1,8 +1,6 @@
 import { gql, graphql } from 'react-apollo'
-import FormGroup from 'react-bootstrap/lib/FormGroup'
-import FormControl from 'react-bootstrap/lib/FormControl'
-import Button from 'react-bootstrap/lib/Button'
 import { reduxForm, Field, SubmissionError } from 'redux-form'
+import { Button, Input } from 're-bulma'
 
 const validate = values => {
   const errors = {}
@@ -28,15 +26,34 @@ const submit = async (values, dispatch, props) => {
 
 const renderField = ({
   input,
+  input: { name },
   label,
   type,
   placeholder,
   meta: { touched, error, warning },
-}) =>
-  <FormGroup validationState={touched && error ? 'error' : ''}>
-    <FormControl placeholder={placeholder} type={type} {...input} />
-    {touched && error && <span className="help-block">{error}</span>}
-  </FormGroup>
+}) => {
+  const config = touched && error
+    ? {
+        color: 'isDanger',
+        text: `This ${name} is invalid`,
+        image: 'fa fa-warning',
+      }
+    : {
+        image: 'fa fa-check',
+      }
+
+  return (
+    <Input
+      color={config.color}
+      type={type}
+      placeholder={placeholder}
+      icon={config.image}
+      hasIconRight
+      help={{ color: config.color, text: config.text }}
+      {...input}
+    />
+  )
+}
 
 function Submit({ handleSubmit, resetForm, submitting, error }) {
   return (
@@ -61,7 +78,9 @@ function Submit({ handleSubmit, resetForm, submitting, error }) {
         component={renderField}
         placeholder="display name"
       />
-      <Button type="submit">Submit</Button>
+      <Button buttonStyle="isOutlined" color="isPrimary" type="submit">
+        Submit
+      </Button>
     </form>
   )
 }
@@ -87,5 +106,5 @@ export default graphql(register, {
   reduxForm({
     form: 'registerForm',
     validate,
-  })(Submit),
+  })(Submit)
 )
