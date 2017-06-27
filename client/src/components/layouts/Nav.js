@@ -13,18 +13,17 @@ import {
   Button,
 } from 're-bulma'
 import NavRight from './NavRight'
+import { Svg } from '../../shared'
 
 const NavLayout = ({ user, title, handleToggleNav, toggleNav }) => {
+  const svgStyle = { height: '20px', width: '20px', paddingRight: '2px' }
+
   return (
     <Nav hasShadow>
       <NavContainer isActive isTab>
         <NavGroup align="left">
           <NavItem>
-            <img
-              style={{ paddingRight: '2px' }}
-              src="/static/logo.png"
-              alt="Logo"
-            />
+            <Svg.Logo style={svgStyle} />
             <strong>{'pollo'}</strong>
           </NavItem>
         </NavGroup>

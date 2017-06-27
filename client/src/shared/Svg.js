@@ -6,5 +6,6 @@ import Notebooks from '../../assets/images/notebooks.svg'
 import Recent from '../../assets/images/recent.svg'
 import Tag from '../../assets/images/tag.svg'
 import Trash from '../../assets/images/trash.svg'
+import Logo from '../../assets/images/logo.svg'
 
-export { Inbox, Favorite, Recent, Trash, Notebook, Notebooks, Tag, Link }
+export { Inbox, Favorite, Recent, Trash, Notebook, Notebooks, Tag, Link, Logo }

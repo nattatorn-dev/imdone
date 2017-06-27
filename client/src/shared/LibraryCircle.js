@@ -9,7 +9,7 @@ const LibraryCircle = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-vertical-align: middle;
+  vertical-align: middle;
   height: ${({ size = '30px' }) => size};
   width:${({ size = '30px' }) => size};
   margin: 0 12px 0 0;

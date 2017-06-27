@@ -33,7 +33,7 @@ const NoteBooksMediaItem = ({
 
   return (
     <LiMedia>
-      <MenuLink href="#" style={{ padding: '10px 5px 18px 5px' }}>
+      <MenuLink href="#" style={{ padding: '10px 15px 18px 15px' }}>
         <Media>
           {renderMediaImage()}
           <MediaContent>

@@ -41,6 +41,7 @@ class OpenGraphPanel extends Component {
       ogUrl,
       ogImage: { url: ogImageUrl = '' },
     } = this.state.openGraph
+    console.log('this.props', this.props)
     return (
       <Box>
         <Media>
@@ -100,7 +101,8 @@ const openGraph = gql`
 `
 
 export default graphql(openGraph, {
-  props: ({ mutate }) => ({
+  props: ({ data, mutate }) => ({
+    data,
     fetchOpenGraph: url =>
       mutate({
         variables: { url },

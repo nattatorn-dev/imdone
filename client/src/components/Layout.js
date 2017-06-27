@@ -101,14 +101,13 @@ class Layout extends React.Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount')
     this.setState({ notebooks: generateNoteBooks(8) })
   }
 
   render() {
     const { user, title } = this.props
     const { toggleNav } = this.state
-    const style = { padding: '0px' }
+
     return (
       <div className="app">
         <Head>
@@ -120,21 +119,15 @@ class Layout extends React.Component {
           handleToggleNav={this.handleToggleNav}
           toggleNav={toggleNav}
         />
-        <Section>
-          <Columns size="is2">
-            <Column style={style}>
+        <Section style={{ padding: '10px' }}>
+          <Columns>
+            <Column>
               <Button color="isDark">Notebooks</Button>
               <Button>Tags</Button>
               <Button>Categories</Button>
-
               <Menu style={{ paddingTop: '30px' }}>
                 <FolderLibraryList lable={'LIBRARY'} library={library} />
                 <FolderLibraryList lable={'NOTEBOOKS'} library={notebooks} />
-                <div>
-                  <MenuLabel>
-                    CONNECTS
-                  </MenuLabel>
-                </div>
               </Menu>
             </Column>
             <ColNoteBooks>
@@ -150,33 +143,6 @@ class Layout extends React.Component {
           </Columns>
         </Section>
         <Footer />
-        <style jsx>{`
-          .app .brand {
-            text-decoration: none;
-            top: 5px;
-            left: 5px;
-            border: 0;
-            background-color: transparent
-            background: url('/static/logo.png') no-repeat center center;
-            width: 40px;
-            height: 40px;
-            background-size: 80%;
-            margin: 5px 10px 0 0;
-            border-radius: 20px;
-          }
-          .app .brand a {
-            display: block;
-            height: 40px;
-            text-indent: -9999px;
-          }
-          .app nav :global(.fa) {
-            font-size: 2em;
-            line-height: 20px;
-          }
-          .appContent {
-            margin: 50px 0; // for fixed navbar
-          }
-        `}</style>
       </div>
     )
   }
