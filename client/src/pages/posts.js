@@ -1,9 +1,9 @@
 import React from 'react'
-import Layout from '../components/Layout'
-import Submit from '../components/Submit'
-import PostList from '../components/PostList'
-import withData from '../lib/withData'
-import { authenticate } from '../utils/AuthService'
+import Layout from 'components/Layout'
+import Submit from 'components/Submit'
+import PostList from 'components/PostList'
+import withData from 'lib/withData'
+import { authenticate } from 'utils/AuthService'
 
 class PostPage extends React.Component {
   static async getInitialProps({ req, res }) {

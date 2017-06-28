@@ -4,7 +4,12 @@ import ContentLoader, { Rect, Circle } from 'react-content-loader'
 const NoteBook = ({ limit = 10 }) => {
   const renderPreloader = () =>
     [...Array(limit).keys()].map((e, k) =>
-      <ContentLoader style={{ margin: '14px 15px' }} height={145} speed={1}>
+      <ContentLoader
+        key={k}
+        style={{ margin: '14px 15px' }}
+        height={145}
+        speed={1}
+      >
         <Circle x={35} y={45} radius={35} />
 
         <Rect x="80" y="17" rx="4" ry="4" width="300" height="13" />

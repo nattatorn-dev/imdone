@@ -5,6 +5,9 @@
   ],
   "plugins": [
     "inline-react-svg",
-    "transform-flow-strip-types"
+    "transform-flow-strip-types",
+    ["module-resolver", {
+      "root": ["./src"]
+    }]
   ]
 }

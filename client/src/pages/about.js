@@ -1,7 +1,6 @@
-import Layout from '../components/Layout'
-
-import withData from '../lib/withData'
-import { authenticate } from '../utils/AuthService'
+import Layout from 'components/Layout'
+import withData from 'lib/withData'
+import { authenticate } from 'utils/AuthService'
 
 const Page = props =>
   <Layout user={props.user} title="About">

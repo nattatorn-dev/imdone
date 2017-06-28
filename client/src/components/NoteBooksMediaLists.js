@@ -11,7 +11,7 @@ const NoteBooksMediaLists = ({ notebooks }) => {
   return notebooks.length === 0
     ? <NoteBookPreLoader limit={10} />
     : <div>
-        {notebooks.map((e, k) => <NoteBooksMediaItem key={k} {...e} />)}
+        {notebooks.map((e, k) => <NoteBooksMediaItem key={`${k}`} {...e} />)}
       </div>
 }
 

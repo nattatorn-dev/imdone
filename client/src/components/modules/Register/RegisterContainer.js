@@ -1,15 +1,13 @@
 import { graphql } from 'react-apollo'
 import { reduxForm } from 'redux-form'
 import { compose, pure } from 'recompose'
-import { ADD_REGISTER } from './graphql'
-import { withMutatable, withPreloader } from '../../hocs'
-
+import { withForm } from 'hocs'
+import { REGISTER } from './graphql'
 import validate from './validate'
 import Register from './Register'
-import { NoteBookPreLoader } from '../../components/preloaders'
 
 export default compose(
-  graphql(ADD_REGISTER, {
+  graphql(REGISTER, {
     props: ({ mutate }) => ({
       register: (username, password, dispName) =>
         mutate({
@@ -21,6 +19,6 @@ export default compose(
     form: 'registerForm',
     validate,
   }),
-  withPreloader,
+  withForm,
   pure
 )(Register)

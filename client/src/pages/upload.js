@@ -1,6 +1,6 @@
-import withData from '../lib/withData'
-import Upload from '../components/Upload'
-import Layout from '../components/Layout'
+import Upload from 'components/Upload'
+import Layout from 'components/Layout'
+import withData from 'lib/withData'
 
 export default withData(props =>
   <Layout title="Upload demo">

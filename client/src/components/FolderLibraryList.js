@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { MenuLabel, MenuList, MenuLink } from 're-bulma'
-import { LibraryCircle, Svg } from '../shared'
+import { LibraryCircle, Svg } from 'shared'
 
-const LibraryItem = ({ display, count, children }) => {
+const LibraryItem = ({ number, display, count, children }) => {
   return (
     <li>
       <MenuLink href="#" style={{ display: 'flex' }}>
@@ -36,7 +36,7 @@ const FolderLibraryList = ({ lable, library }) => {
       </MenuLabel>
       <MenuList>
         {library.map((e, k) =>
-          <LibraryItem {...e}>
+          <LibraryItem {...e} key={`${k}-${e.fileName}`}>
             <LibraryCircle fileName={e.fileName} size={'16px'} />
           </LibraryItem>
         )}

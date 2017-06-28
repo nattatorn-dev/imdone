@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
-import { logout } from '../../utils/AuthService'
+import { logout } from 'utils/AuthService'
 
 import {
   Nav,

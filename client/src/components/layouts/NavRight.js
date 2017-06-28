@@ -1,7 +1,9 @@
 import React from 'react'
-import { logout } from '../../utils/AuthService'
 import Link from 'next/link'
-import { NavGroup, NavItem, Button } from 're-bulma'
+
+import { logout } from 'utils/AuthService'
+
+import { Button, NavGroup, NavItem } from 're-bulma'
 
 const NavRight = ({ user }) => {
   return (

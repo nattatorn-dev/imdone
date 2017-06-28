@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from 'react'
-import { logout } from '../utils/AuthService'
+import React, { Component } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import { logout } from 'utils/AuthService'
+
 import {
   Section,
   Container,
@@ -25,14 +26,6 @@ import {
   Addons,
   Input,
 } from 're-bulma'
-
-import InboxIcon from '../../assets/images/inbox.svg'
-import FavoriteIcon from '../../assets/images/favorite.svg'
-import RecentIcon from '../../assets/images/recent.svg'
-import TrashIcon from '../../assets/images/trash.svg'
-import NotebookIcon from '../../assets/images/notebook.svg'
-import NotebooksIcon from '../../assets/images/notebooks.svg'
-import TagIcon from '../../assets/images/tag.svg'
 
 import { Nav, Footer, ColBody, ColNoteBooks } from './layouts'
 import NoteBooksMediaLists from './NoteBooksMediaLists'

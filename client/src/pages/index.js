@@ -1,8 +1,7 @@
 import { Title, Subtitle } from 're-bulma'
-import Layout from '../components/Layout'
-
-import withData from '../lib/withData'
-import { authenticate } from '../utils/AuthService'
+import withData from 'lib/withData'
+import { authenticate } from 'utils/AuthService'
+import Layout from 'components/Layout'
 
 const Page = props =>
   <Layout user={props.user} title="Home">
