@@ -1,4 +1,5 @@
+import Loader from './Loader'
 import NoteBookPreLoader from './NoteBook'
 import OpenGraphPreLoader from './OpenGraph'
 
-export { NoteBookPreLoader, OpenGraphPreLoader }
+export { Loader, NoteBookPreLoader, OpenGraphPreLoader }

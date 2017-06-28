@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { gql, graphql } from 'react-apollo'
+import { gql, graphql, compose } from 'react-apollo'
 import {
   Box,
   Media,
@@ -11,8 +11,15 @@ import {
   Image,
 } from 're-bulma'
 
+import { withMutatable } from '../hocs'
+import { OpenGraphPreLoader } from '../components/preloaders'
+
+import { ImageCircle } from '../shared'
+
 class OpenGraphPanel extends Component {
-  state = { openGraph: {} }
+  state = {
+    enableFetchOg: true,
+  }
   // onClick = async () => {
   //   const { data: { openGraph } } = await this.props.fetchOpenGraph(
   //     this.props.url,
@@ -30,27 +37,40 @@ class OpenGraphPanel extends Component {
   }
 
   fetchOpenGraph = async (url = this.props.url) => {
-    const { data: { openGraph } } = await this.props.fetchOpenGraph(url)
-    this.setState({ openGraph })
+    // const { data: { openGraph } } = await this.props.fetchOpenGraph(url)
+    if (this.state.enableFetchOg) {
+      this.props.submit(null, { url })
+      this.setState((prevState, props) => {
+        return { enableFetchOg: !prevState.enableFetchOg }
+      })
+    } else null
+    // this.setState({ openGraph })
   }
 
+  isUrl = () => {
+    const expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi
+    const regex = new RegExp(expression)
+    if (this.props.url.match(regex)) {
+      return true
+    } else {
+      return false
+    }
+  }
   renderOpenGraph = () => {
     const {
       ogTitle,
       ogDescription,
       ogUrl,
       ogImage: { url: ogImageUrl = '' },
-    } = this.state.openGraph
-    console.log('this.props', this.props)
+    } = this.props.data.openGraph
+
     return (
       <Box>
         <Media>
-          <MediaLeft>
-            {ogImageUrl && <Image src={ogImageUrl} size="is128X128" />}
-          </MediaLeft>
-          <MediaLeft>
-            <Button delete />
-          </MediaLeft>
+          {ogImageUrl &&
+            <MediaLeft>
+              <ImageCircle src={ogImageUrl} size={'128px'} radius={'50%'} />
+            </MediaLeft>}
           <MediaContent>
             <Content>
               <p>
@@ -72,13 +92,17 @@ class OpenGraphPanel extends Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.state.openGraph && Object.keys(this.state.openGraph).length !== 0
-          ? this.renderOpenGraph()
-          : null}
-      </div>
-    )
+    if (this.props.loading && this.isUrl()) {
+      return (
+        <Box style={{ padding: '0 20px' }}>
+          <OpenGraphPreLoader limit={1} />
+        </Box>
+      )
+    } else if (this.props.data && this.props.data.openGraph) {
+      return this.renderOpenGraph()
+    } else {
+      return null
+    }
   }
 }
 
@@ -100,12 +124,4 @@ const openGraph = gql`
   }
 `
 
-export default graphql(openGraph, {
-  props: ({ data, mutate }) => ({
-    data,
-    fetchOpenGraph: url =>
-      mutate({
-        variables: { url },
-      }),
-  }),
-})(OpenGraphPanel)
+export default compose(graphql(openGraph), withMutatable())(OpenGraphPanel)

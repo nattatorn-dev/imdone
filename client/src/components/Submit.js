@@ -75,14 +75,14 @@ function Submit({ data, handleSubmit, resetForm, submitting, error, hasUrl }) {
     <form onSubmit={handleSubmit(submit)}>
       <h1>Create Post</h1>
       {error && <div className="alert alert-danger">{error}</div>}
+      <Field name="url" type="text" component={renderField} placeholder="url" />
+      {hasUrl && <OpenGraph url={hasUrl} />}
       <Field
         name="title"
         type="text"
         component={renderField}
         placeholder="title"
       />
-      <Field name="url" type="text" component={renderField} placeholder="url" />
-      {hasUrl && <OpenGraph url={hasUrl} />}
       <Button buttonStyle="isOutlined" color="isPrimary" type="submit">
         Submit
       </Button>

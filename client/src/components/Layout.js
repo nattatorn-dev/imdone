@@ -22,6 +22,8 @@ import {
   MediaRight,
   Image,
   Tag,
+  Addons,
+  Input,
 } from 're-bulma'
 
 import InboxIcon from '../../assets/images/inbox.svg'
@@ -133,6 +135,7 @@ class Layout extends React.Component {
             <ColNoteBooks>
               <Menu>
                 <MenuList>
+                  <Input placeholder="Filter by keywprd, title or #tag" />
                   <NoteBooksMediaLists notebooks={this.state.notebooks} />
                 </MenuList>
               </Menu>

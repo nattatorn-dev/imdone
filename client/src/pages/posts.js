@@ -15,8 +15,8 @@ class PostPage extends React.Component {
     return (
       <Layout user={this.props.user} title="Post List">
         <Submit />
-        <hr />
-        <PostList />
+        {/* <hr />
+        <PostList /> */}
       </Layout>
     )
   }

@@ -1,7 +1,6 @@
 import { branch, renderComponent } from 'recompose'
-import Preloader from 'components/modules/Post/Preloader/Preloader'
+import { Loader } from '../components/preloaders'
 
-export default branch(
-  (props) => props.data.loading,
-  renderComponent(Preloader),
-)
+export default branch(props => {
+  return props.loading
+}, renderComponent(Loader))

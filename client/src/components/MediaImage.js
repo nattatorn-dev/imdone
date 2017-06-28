@@ -2,7 +2,6 @@ import React from 'react'
 import { MediaLeft, Image } from 're-bulma'
 import { ImageCircle } from '../shared'
 
-console.log('ImageCircle', ImageCircle)
 const MediaImage = ({ url, width, height, type }) => {
   return (
     <MediaLeft>
