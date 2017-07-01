@@ -1,5 +1,5 @@
-import Upload from 'components/Upload'
-import Layout from 'components/Layout'
+import Upload from '@components/Upload'
+import Layout from '@components/Layout'
 import withData from 'lib/withData'
 
 export default withData(props =>

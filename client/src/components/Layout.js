@@ -5,31 +5,18 @@ import { logout } from 'utils/AuthService'
 
 import {
   Section,
-  Container,
   Columns,
   Column,
-  Box,
-  Content,
   Button,
-  Icon,
-  Notification,
   Menu,
-  MenuLabel,
   MenuList,
-  MenuLink,
-  Media,
-  MediaLeft,
-  MediaContent,
-  MediaRight,
-  Image,
-  Tag,
-  Addons,
   Input,
 } from 're-bulma'
 
 import { Nav, Footer, ColBody, ColNoteBooks } from './layouts'
 import NoteBooksMediaLists from './NoteBooksMediaLists'
 import FolderLibraryList from './FolderLibraryList'
+// import generateNoteBooks from '>mocks/noteBooks'
 import faker from 'faker'
 
 const generateNoteBooks = (limit = 10) => {

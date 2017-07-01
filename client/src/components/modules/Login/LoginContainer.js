@@ -16,12 +16,12 @@ export default compose(
         }),
     }),
   }),
+  withProps({
+    loginService: login,
+  }),
   reduxForm({
     form: 'loginForm',
     validate,
-  }),
-  withProps({
-    loginService: Login,
   }),
   withForm,
   pure

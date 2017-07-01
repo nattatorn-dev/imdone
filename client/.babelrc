@@ -7,7 +7,11 @@
     "inline-react-svg",
     "transform-flow-strip-types",
     ["module-resolver", {
-      "root": ["./src"]
+      "root": ["./src"],
+      "alias": {
+       ">mocks": "./mocks",
+       "@components": "./src/components",
+     }
     }]
   ]
 }

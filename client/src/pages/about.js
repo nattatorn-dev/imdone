@@ -1,4 +1,4 @@
-import Layout from 'components/Layout'
+import Layout from '@components/Layout'
 import withData from 'lib/withData'
 import { authenticate } from 'utils/AuthService'
 

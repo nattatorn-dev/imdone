@@ -1,6 +1,5 @@
 import { gql, graphql } from 'react-apollo'
 import { reduxForm, Field, SubmissionError } from 'redux-form'
-import { login } from 'utils/AuthService'
 import { Button, Input } from 're-bulma'
 import { FormField } from 'shared'
 
